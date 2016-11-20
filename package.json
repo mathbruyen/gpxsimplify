@@ -1,0 +1,19 @@
+{
+  "name": "gpxsimplify",
+  "private": true,
+  "version": "0.0.0",
+  "description": "GPX simplifier",
+  "scripts": {
+    "build": "babel src -d lib --presets es2015",
+    "simplify": "node lib/index.js"
+  },
+  "author": "Mathieu Bruyen <code@mais-h.eu>",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
+  }
+}
