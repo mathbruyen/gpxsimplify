@@ -6,6 +6,7 @@ import { Buffer } from 'buffer';
 /**
  * Extracts jekyll frontmatter to a different flow than actual content.
  *
+ * TODO: automatically detect the pattern on the first chunk instead of asking for an option
  * TODO: match the pattern against ongoing buffer and directly write to output content which cannot match
  */
 export default class ExtractFrontmatter extends Transform {
