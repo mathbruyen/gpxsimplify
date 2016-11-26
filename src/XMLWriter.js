@@ -4,6 +4,8 @@ import { Transform } from 'stream';
 
 /**
  * Very basic no-validation XML generator from object stream.
+ *
+ * TODO: use a real XML builder for escaping
  */
 export default class XMLWriter extends Transform {
 
@@ -19,16 +21,16 @@ export default class XMLWriter extends Transform {
     } else if (chunk.type === 'text') {
       this.push(chunk.text);
     } else if (chunk.type === 'opentag') {
-      var attr = this._buildAttributes(chunk.attributes);
+      var attr = chunk.attributes && this._buildAttributes(chunk.attributes);
       if (attr) {
         this.push(`\n${this._buildIndent()}<${chunk.name} ${attr}>`);
       } else {
         this.push(`\n${this._buildIndent()}<${chunk.name}>`);
       }
       this._closeOnNewLine = false;
-      this._indent += 2;
+      this._indent++;
     } else if (chunk.type === 'closetag') {
-      this._indent -= 2;
+      this._indent--;
       if (this._closeOnNewLine) {
         this.push(`\n${this._buildIndent()}</${chunk.name}>`);
       } else {
@@ -41,16 +43,12 @@ export default class XMLWriter extends Transform {
     callback();
   }
 
-  _flush(callback) {
-    callback();
-  }
-
   _buildIndent() {
-    return ' '.repeat(this._indent);
+    return '  '.repeat(this._indent);
   }
 
   _buildAttributes(attributes) {
-    return Object.keys(attributes).map(attr => `${attr}="${attributes[attr].value}"`).join(' ');
+    return Object.keys(attributes).map(attr => `${attr}="${attributes[attr]}"`).join(' ');
   }
 
 }

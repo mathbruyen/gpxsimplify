@@ -10,7 +10,7 @@ export default class XMLReader extends Transform {
 
   constructor(options) {
     super(Object.assign({ objectMode : true }, options));
-    this._parser = sax.parser(true, { xmlns : true, trim : true });
+    this._parser = sax.parser(true, { trim : true });
     this._parser.ontext = text => this.push({ type : 'text', text });
     this._parser.onprocessinginstruction = ({ name, body }) => this.push({ type : 'processinginstruction', name, body });
     this._parser.onopentag = ({ name, attributes }) => this.push({ type : 'opentag', name, attributes });
@@ -24,8 +24,8 @@ export default class XMLReader extends Transform {
   }
 
   _flush(callback) {
+    this._parser.onend = callback;
     this._parser.close();
-    this._parser.on('end', callback);
   }
 
 }

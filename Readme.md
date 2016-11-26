@@ -10,7 +10,7 @@ npm run build
 Run:
 
 ``
-cat input.gpx | npm run simplify -- --frontmatter > output.gpx
+node lib/index.js --frontmatter < input.gpx > output.gpx
 ```
 
 Options:

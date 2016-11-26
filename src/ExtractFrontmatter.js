@@ -5,6 +5,8 @@ import { Buffer } from 'buffer';
 
 /**
  * Extracts jekyll frontmatter to a different flow than actual content.
+ *
+ * TODO: match the pattern against ongoing buffer and directly write to output content which cannot match
  */
 export default class ExtractFrontmatter extends Transform {
 
@@ -36,8 +38,8 @@ export default class ExtractFrontmatter extends Transform {
     if (this.pending) {
       console.error('Frontmatter: detection requested but content not found, ignoring but content was fully buffered.');
       this.push(this.pending);
-      callback();
     }
+    callback();
   }
 
 }
