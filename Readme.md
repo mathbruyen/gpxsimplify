@@ -9,7 +9,7 @@ npm run build
 
 Remove nodes which are less than 10 meters away from the track:
 
-``
+```
 node lib/index.js --frontmatter --accuracy 10 < input.gpx > output.gpx
 ```
 
