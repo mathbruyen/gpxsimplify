@@ -1,6 +1,7 @@
 'use strict';
 
 export function haversine(a, b) {
+  // TODO better handle elevation in the distance
   var radius = 6371000 + ((a.ele + b.ele) / 2);
   var aLat = a.lat * Math.PI / 180;
   var aLon = a.lon * Math.PI / 180;
