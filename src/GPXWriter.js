@@ -27,12 +27,16 @@ export default class GPXWriter extends Transform {
         name : 'trkpt',
         attributes : { lat : chunk.point.lat.toString(), lon : chunk.point.lon.toString() }
       });
-      this.push({ type : 'opentag', name : 'ele' });
-      this.push({ type : 'text', text : chunk.point.ele.toString() });
-      this.push({ type : 'closetag', name : 'ele' });
-      this.push({ type : 'opentag', name : 'time' });
-      this.push({ type : 'text', text : (new Date(chunk.point.time)).toISOString() });
-      this.push({ type : 'closetag', name : 'time' });
+      if (chunk.point.ele) {
+        this.push({ type : 'opentag', name : 'ele' });
+        this.push({ type : 'text', text : chunk.point.ele.toString() });
+        this.push({ type : 'closetag', name : 'ele' });
+      }
+      if (chunk.point.time) {
+        this.push({ type : 'opentag', name : 'time' });
+        this.push({ type : 'text', text : (new Date(chunk.point.time)).toISOString() });
+        this.push({ type : 'closetag', name : 'time' });
+      }
       this.push({ type : 'closetag', name : 'trkpt' });
     }
     callback();

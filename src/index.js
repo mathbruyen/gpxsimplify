@@ -7,6 +7,7 @@ import XMLWriter from './XMLWriter';
 import GPXReader from './GPXReader';
 import GPXWriter from './GPXWriter';
 import GPXStats from './GPXStats';
+import GPXSimplify from './GPXSimplify';
 
 var input = process.stdin;
 const argv = minimist(process.argv.slice(2));
@@ -18,7 +19,7 @@ if (argv.frontmatter) {
 input.pipe(new XMLReader())
   .pipe(new GPXReader())
   .pipe(new GPXStats({ header : 'Input statistics:', output : console.error.bind(console) }))
-  // TODO simplification goes here
+  .pipe(new GPXSimplify({ accuracy : argv.accuracy }))
   .pipe(new GPXStats({ header : 'Output statistics:', output : console.error.bind(console) }))
   .pipe(new GPXWriter())
   .pipe(new XMLWriter())
