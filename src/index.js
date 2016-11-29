@@ -8,19 +8,21 @@ import GPXReader from './GPXReader';
 import GPXWriter from './GPXWriter';
 import GPXStats from './GPXStats';
 import GPXSimplify from './GPXSimplify';
+import { createReadStream, createWriteStream } from 'fs';
 
-var input = process.stdin;
 const argv = minimist(process.argv.slice(2));
-const output = process.stdout;
+var input = argv.in ? createReadStream(argv.in, { encoding : 'utf-8' }) : process.stdin;
+const output = argv.out ? createWriteStream(argv.out, { defaultEncoding : 'utf-8' }) : process.stdout;
+const log = argv.out ? console.error.bind(console) : console.log.bind(console);
 
 if (argv.frontmatter) {
   input = input.pipe(new ExtractFrontmatter({ frontmatter : output }));
 }
 input.pipe(new XMLReader())
   .pipe(new GPXReader())
-  .pipe(new GPXStats({ header : 'Input statistics:', output : console.error.bind(console) }))
+  .pipe(new GPXStats({ header : 'Input statistics:', output : log }))
   .pipe(new GPXSimplify({ accuracy : argv.accuracy }))
-  .pipe(new GPXStats({ header : 'Output statistics:', output : console.error.bind(console) }))
+  .pipe(new GPXStats({ header : 'Output statistics:', output : log }))
   .pipe(new GPXWriter())
   .pipe(new XMLWriter())
   .pipe(output);
