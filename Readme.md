@@ -10,16 +10,19 @@ npm run build
 Remove nodes which are less than 10 meters away from the track:
 
 ```
-node lib/index.js --frontmatter --accuracy 10 < input.gpx > output.gpx
-npm run simplify -- --frontmatter --accuracy 10 --in input.gpx --out output.gpx
+node lib/index.js --accuracy 10 < input.gpx > output.gpx
+npm run simplify -- --accuracy 10 --in input.gpx --out output.gpx
 ```
 
 Options:
 
-* `frontmatter`: ignore [Jekyll frontmatter](http://jekyllrb.com/docs/frontmatter/) on top of the input
 * `accuracy`: remove points are less than X meters away from the track excluding them
 * `in`: input file (otherwise reads from stdin)
 * `out`: output file (otherwise writes to stdout)
+
+Features:
+
+* automatically ignores [Jekyll frontmatter](http://jekyllrb.com/docs/frontmatter/) on top of the input
 
 Limitations:
 

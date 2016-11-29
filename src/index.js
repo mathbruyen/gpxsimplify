@@ -11,14 +11,12 @@ import GPXSimplify from './GPXSimplify';
 import { createReadStream, createWriteStream } from 'fs';
 
 const argv = minimist(process.argv.slice(2));
-var input = argv.in ? createReadStream(argv.in, { encoding : 'utf-8' }) : process.stdin;
+const input = argv.in ? createReadStream(argv.in, { encoding : 'utf-8' }) : process.stdin;
 const output = argv.out ? createWriteStream(argv.out, { defaultEncoding : 'utf-8' }) : process.stdout;
 const log = argv.out ? console.error.bind(console) : console.log.bind(console);
 
-if (argv.frontmatter) {
-  input = input.pipe(new ExtractFrontmatter({ frontmatter : output }));
-}
-input.pipe(new XMLReader())
+input.pipe(new ExtractFrontmatter({ frontmatter : output, log }))
+  .pipe(new XMLReader())
   .pipe(new GPXReader())
   .pipe(new GPXStats({ header : 'Input statistics:', output : log }))
   .pipe(new GPXSimplify({ accuracy : argv.accuracy }))
@@ -26,3 +24,5 @@ input.pipe(new XMLReader())
   .pipe(new GPXWriter())
   .pipe(new XMLWriter())
   .pipe(output);
+
+// TODO handle on('error')
